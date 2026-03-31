@@ -1,0 +1,28 @@
+body {
+  background-color: #f4f7f4;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+}
+
+.stat-card {
+  border-left: 4px solid;
+}
+.stat-card.total    { border-color: #198754; }
+.stat-card.tool     { border-color: #0d6efd; }
+.stat-card.machine  { border-color: #6f42c1; }
+.stat-card.available   { border-color: #20c997; }
+.stat-card.in_use      { border-color: #fd7e14; }
+.stat-card.maintenance { border-color: #ffc107; }
+.stat-card.retired     { border-color: #6c757d; }
+
+.badge-available   { background-color: #20c997; }
+.badge-in_use      { background-color: #fd7e14; }
+.badge-maintenance { background-color: #ffc107; color: #000; }
+.badge-retired     { background-color: #6c757d; }
+
+table thead th {
+  white-space: nowrap;
+}

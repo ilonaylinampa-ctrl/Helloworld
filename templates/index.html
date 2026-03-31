@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forestry Asset Manager</title>
+  <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/vendor/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-success px-4">
+  <a class="navbar-brand fw-bold" href="#">
+    <i class="bi bi-tree-fill me-2"></i>Forestry Asset Manager
+  </a>
+</nav>
+
+<!-- Stats Cards -->
+<div class="container-fluid mt-4">
+  <div id="stats-row" class="row g-3 mb-4"></div>
+
+  <!-- Toolbar -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-auto">
+      <select id="filter-category" class="form-select form-select-sm">
+        <option value="">All categories</option>
+        <option value="tool">Tools</option>
+        <option value="machine">Machines</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <select id="filter-status" class="form-select form-select-sm">
+        <option value="">All statuses</option>
+        <option value="available">Available</option>
+        <option value="in_use">In Use</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="retired">Retired</option>
+      </select>
+    </div>
+    <div class="col">
+      <input id="search-input" class="form-control form-control-sm"
+             type="text" placeholder="Search by name or type…" />
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-success btn-sm" onclick="openAddModal()">
+        <i class="bi bi-plus-lg"></i> Add Asset
+      </button>
+    </div>
+  </div>
+
+  <!-- Assets Table -->
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-success">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Type</th>
+          <th>Serial&nbsp;No.</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Last&nbsp;Maintenance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="assets-tbody"></tbody>
+    </table>
+    <p id="no-assets" class="text-center text-muted d-none">No assets found.</p>
+  </div>
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="modal fade" id="assetModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="modal-title">Add Asset</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="asset-form">
+          <input type="hidden" id="asset-id" />
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Name *</label>
+              <input type="text" id="f-name" class="form-control" required />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Category *</label>
+              <select id="f-category" class="form-select" required>
+                <option value="">Select…</option>
+                <option value="tool">Tool</option>
+                <option value="machine">Machine</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Type *</label>
+              <input type="text" id="f-asset-type" class="form-control"
+                     placeholder="e.g. chainsaw" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Serial Number</label>
+              <input type="text" id="f-serial" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Status</label>
+              <select id="f-status" class="form-select">
+                <option value="available">Available</option>
+                <option value="in_use">In Use</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="retired">Retired</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Location</label>
+              <input type="text" id="f-location" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Purchase Date</label>
+              <input type="date" id="f-purchase-date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Last Maintenance</label>
+              <input type="date" id="f-last-maintenance" class="form-control" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Notes</label>
+              <textarea id="f-notes" class="form-control" rows="2"></textarea>
+            </div>
+          </div>
+          <div id="form-error" class="alert alert-danger mt-3 d-none"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="saveAsset()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <strong id="delete-name"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/vendor/bootstrap.bundle.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
