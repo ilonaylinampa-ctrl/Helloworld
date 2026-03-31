@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockWave – Inventory Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">📦</span>
+      <span class="logo-text">StockWave</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-view="inventory">
+        <span class="nav-icon">🗂️</span> Inventory
+      </a>
+      <a href="#" class="nav-item" data-view="add">
+        <span class="nav-icon">➕</span> Add Product
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <span id="total-products">0 products</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- INVENTORY VIEW -->
+    <section id="view-inventory" class="view active">
+      <header class="page-header">
+        <div>
+          <h1>Inventory</h1>
+          <p class="subtitle">Manage your product stock</p>
+        </div>
+        <div class="header-actions">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search products…" />
+          </div>
+          <select id="category-filter">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="stats-bar" id="stats-bar"></div>
+
+      <div class="table-wrap">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="product-tbody">
+            <tr><td colspan="7" class="loading">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ADD PRODUCT VIEW -->
+    <section id="view-add" class="view">
+      <header class="page-header">
+        <div>
+          <h1 id="form-title">Add Product</h1>
+          <p class="subtitle" id="form-subtitle">Fill in the details below</p>
+        </div>
+      </header>
+
+      <div class="form-card">
+        <form id="product-form" novalidate>
+          <input type="hidden" id="edit-id" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-name">Product Name <span class="req">*</span></label>
+              <input type="text" id="f-name" placeholder="e.g. Wireless Headphones" required />
+            </div>
+            <div class="form-group">
+              <label for="f-sku">SKU <span class="req">*</span></label>
+              <input type="text" id="f-sku" placeholder="e.g. ELEC-006" required />
+            </div>
+            <div class="form-group">
+              <label for="f-category">Category <span class="req">*</span></label>
+              <input type="text" id="f-category" list="category-suggestions" placeholder="e.g. Electronics" required />
+              <datalist id="category-suggestions"></datalist>
+            </div>
+            <div class="form-group">
+              <label for="f-price">Price ($) <span class="req">*</span></label>
+              <input type="number" id="f-price" min="0" step="0.01" placeholder="0.00" required />
+            </div>
+            <div class="form-group">
+              <label for="f-quantity">Quantity <span class="req">*</span></label>
+              <input type="number" id="f-quantity" min="0" step="1" placeholder="0" required />
+            </div>
+            <div class="form-group full-width">
+              <label for="f-description">Description</label>
+              <textarea id="f-description" rows="3" placeholder="Optional product description…"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="submit-btn">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-icon">🗑️</div>
+      <h3>Delete Product?</h3>
+      <p id="modal-msg">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+        <button class="btn btn-danger" id="modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

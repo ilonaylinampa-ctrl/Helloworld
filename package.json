@@ -1,0 +1,28 @@
+{
+  "name": "retail-inventory-app",
+  "version": "1.0.0",
+  "description": "Inventory management web app for retail stores",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/api.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilonaylinampa-ctrl/Helloworld.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ilonaylinampa-ctrl/Helloworld/issues"
+  },
+  "homepage": "https://github.com/ilonaylinampa-ctrl/Helloworld#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2"
+  }
+}
